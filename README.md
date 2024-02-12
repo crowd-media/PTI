@@ -1,3 +1,38 @@
+# Unith installation
+
+To set up the Unith environment, follow these steps:
+
+## Step 1: Conda environment
+```bash
+conda create --name pti310 python=3.10.12
+conda activate pti310
+```
+## Step 2: Install Dependencies
+Install the required Python packages using pip:
+
+```bash
+pip install lpips
+pip install wandb
+pip install matplotlib
+pip install dlib
+```
+
+Install specific version of PyTorch:
+
+```bash
+pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
+```
+
+## Step 3: Install Ninja (Build System)
+
+```bash
+wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
+sudo unzip ninja-linux.zip -d /usr/local/bin/
+sudo update-alternatives --install /usr/bin/ninja ninja /usr/local/bin/ninja 1 --force
+```
+
+After completing these steps, your Unith environment should be set up and ready to use!
+
 # PTI: Pivotal Tuning for Latent-based editing of Real Images     (ACM TOG 2022)
 
 <!-- > Recently, a surge of advanced facial editing techniques have been proposed
