@@ -7,9 +7,9 @@ import torch
 from configs import paths_config, hyperparameters, global_config
 from utils.align_data import pre_process_images
 from scripts.run_pti import run_PTI
-# from IPython.display import display
 import matplotlib.pyplot as plt
 from scripts.latent_editor_wrapper import LatentEditorWrapper
+import cv2
 
 #configuration
 image_dir_name = 'image'
@@ -35,38 +35,38 @@ pre_process_images(f'./{image_dir_name}_original')
 os.chdir('.')
 model_id = run_PTI(use_wandb=False, use_multi_id_training=True)
 
-# def display_alongside_source_image(images): 
-#     res = np.concatenate([np.array(image) for image in images], axis=1) 
-#     return Image.fromarray(res) 
+def display_alongside_source_image(images): 
+    res = np.concatenate([np.array(image) for image in images], axis=1) 
+    return Image.fromarray(res) 
 
-# def load_generators(model_id, image_name):
-#   with open(paths_config.stylegan2_ada_ffhq, 'rb') as f:
-#     old_G = pickle.load(f)['G_ema'].cuda()
+def load_generators(model_id, image_name):
+  with open(paths_config.stylegan2_ada_ffhq, 'rb') as f:
+    old_G = pickle.load(f)['G_ema'].cuda()
     
-#   with open(f'{paths_config.checkpoints_dir}/model_{model_id}_multi_id.pt', 'rb') as f_new: 
-#     new_G = torch.load(f_new).cuda()
+  with open(f'{paths_config.checkpoints_dir}/model_{model_id}_multi_id.pt', 'rb') as f_new: 
+    new_G = torch.load(f_new).cuda()
 
-#   return old_G, new_G
+  return old_G, new_G
 
-# generator_type = paths_config.multi_id_model_type if use_multi_id_training else image_name
-# old_G, new_G = load_generators(model_id, generator_type)
+generator_type = paths_config.multi_id_model_type if use_multi_id_training else image_name
+old_G, new_G = load_generators(model_id, generator_type)
 
-# def plot_syn_images(syn_images): 
-#   for img in syn_images: 
-#       img = (img.permute(0, 2, 3, 1) * 127.5 + 128).clamp(0, 255).to(torch.uint8).detach().cpu().numpy()[0] 
-#       plt.axis('off') 
-#       resized_image = Image.fromarray(img,mode='RGB').resize((256,256)) 
-#       display(resized_image) 
-#       del img 
-#       del resized_image 
-#       torch.cuda.empty_cache()
+def plot_syn_images(syn_images): 
+  for img in syn_images: 
+      img = (img.permute(0, 2, 3, 1) * 127.5 + 128).clamp(0, 255).to(torch.uint8).detach().cpu().numpy()[0] 
+      plt.axis('off') 
+      resized_image = Image.fromarray(img,mode='RGB').resize((256,256)) 
+      cv2.imwrite('resized.png', resized_image)
+      del img 
+      del resized_image 
+      torch.cuda.empty_cache()
 
-# w_path_dir = f'{paths_config.embedding_base_dir}/{paths_config.input_data_id}'
-# embedding_dir = f'{w_path_dir}/{paths_config.pti_results_keyword}/{image_name}'
-# w_pivot = torch.load(f'{embedding_dir}/0.pt')
+w_path_dir = f'{paths_config.embedding_base_dir}/{paths_config.input_data_id}'
+embedding_dir = f'{w_path_dir}/{paths_config.pti_results_keyword}/{image_name}'
+w_pivot = torch.load(f'{embedding_dir}/0.pt')
 
-# old_image = old_G.synthesis(w_pivot_it, noise_mode='const', force_fp32 = True)
-# new_image = new_G.synthesis(w_pivot_it, noise_mode='const', force_fp32 = True)
+old_image = old_G.synthesis(w_pivot, noise_mode='const', force_fp32 = True)
+new_image = new_G.synthesis(w_pivot, noise_mode='const', force_fp32 = True)
 
-# print('Upper image is the inversion before Pivotal Tuning and the lower image is the product of pivotal tuning')
-# plot_syn_images([old_image, new_image])
+print('Upper image is the inversion before Pivotal Tuning and the lower image is the product of pivotal tuning')
+plot_syn_images([old_image, new_image])
