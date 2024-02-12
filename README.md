@@ -4,8 +4,8 @@ To set up the Unith environment, follow these steps:
 
 ## Step 1: Conda environment
 ```bash
-conda create --name pti310 python=3.10.12
-conda activate pti310
+conda create --name pti python=3.10.12
+conda activate pti
 ```
 ## Step 2: Install Dependencies
 Install the required Python packages using pip:
