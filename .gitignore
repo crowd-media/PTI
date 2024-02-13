@@ -1,1 +1,5 @@
-
+*__pycache__/
+ ninja-linux.zip
+ embeddings/
+ image_original/
+ image_processed/

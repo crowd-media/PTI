@@ -13,7 +13,7 @@ def pre_process_images(raw_images_path):
     predictor = dlib.shape_predictor(paths_config.dlib)
     os.chdir(raw_images_path)
     images_names = glob.glob(f'*')
-
+    os.chdir(current_directory)
     aligned_images = []
     for image_name in tqdm(images_names):
         try:
