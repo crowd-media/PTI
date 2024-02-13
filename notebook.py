@@ -17,7 +17,7 @@ image_dir_name = 'image'
 ## If set to true download desired image from given url. If set to False, assumes you have uploaded personal image to
 ## 'image_original' dir
 use_image_online = True
-image_name = 'personal_image'
+image_name = '00'
 use_multi_id_training = False
 global_config.device = 'cuda'
 paths_config.e4e = './pretrained_models/e4e_ffhq_encode.pt'
@@ -56,7 +56,7 @@ def plot_syn_images(syn_images):
       img = (img.permute(0, 2, 3, 1) * 127.5 + 128).clamp(0, 255).to(torch.uint8).detach().cpu().numpy()[0] 
       plt.axis('off') 
       resized_image = Image.fromarray(img,mode='RGB').resize((256,256)) 
-      cv2.imwrite('resized.png', resized_image)
+      resized_image.save('resized.png')
       del img 
       del resized_image 
       torch.cuda.empty_cache()
@@ -67,6 +67,3 @@ w_pivot = torch.load(f'{embedding_dir}/0.pt')
 
 old_image = old_G.synthesis(w_pivot, noise_mode='const', force_fp32 = True)
 new_image = new_G.synthesis(w_pivot, noise_mode='const', force_fp32 = True)
-
-print('Upper image is the inversion before Pivotal Tuning and the lower image is the product of pivotal tuning')
-plot_syn_images([old_image, new_image])
