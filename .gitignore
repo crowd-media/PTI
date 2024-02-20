@@ -3,3 +3,5 @@
  embeddings/
  image_original/
  image_processed/
+
+ *.mp4
