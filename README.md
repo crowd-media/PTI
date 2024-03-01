@@ -16,6 +16,7 @@ pip install wandb
 pip install matplotlib
 pip install dlib
 pip install opencv-python
+pip install pydantic
 ```
 
 Install specific version of PyTorch:
