@@ -1,0 +1,25 @@
+{
+    "video_path": "/home/ubuntu/PTI/CORP_KIK_v01.mp4",
+    "landmarks_model_path": "/home/ubuntu/efs/data/models/dlib/align.dat",
+    "dbpn":{
+        "checkpoint_path": "tests/data/checkpoints/dbpn_12_417.pth",
+        "num_channels": 3,
+        "base_filter": 64,
+        "feat": 256,
+        "num_stages": 3,
+        "scale_factor": 1, 
+        "device": "cuda"
+    },
+    "mask_params":{
+        "mask_offset_factor": 0.1,
+        "mask_sigma":1,
+        "mask_diameter_scale":1
+    },
+    "key_frames_params":{
+        "activate_key_frames": 0,
+        "max_waiting_frames": 15,
+        "metric_threshold": 0.9,
+        "sampling_frames":3,
+        "resize_factor":0.7
+    }
+}
