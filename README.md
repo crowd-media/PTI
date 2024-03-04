@@ -4,7 +4,7 @@ To set up the Unith environment, follow these steps:
 
 ## Step 1: Conda environment
 ```bash
-conda create --name pti310 python=3.11.5
+conda create --name pti311 python=3.11.5
 conda activate pti311
 ```
 ## Step 2: Install Dependencies
@@ -18,6 +18,7 @@ pip install dlib
 pip install opencv-python
 pip install pydantic
 pip install scikit-image
+pip install kornia
 ```
 
 Install specific version of PyTorch:
