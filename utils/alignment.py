@@ -4,7 +4,7 @@ import PIL.Image
 import scipy
 import scipy.ndimage
 import dlib
-
+import cv2
 
 def get_landmark(filepath, predictor):
     """get landmark with dlib
@@ -12,8 +12,10 @@ def get_landmark(filepath, predictor):
     """
     detector = dlib.get_frontal_face_detector()
 
-    img = dlib.load_rgb_image(filepath)
-    dets = detector(img, 1)
+    # img = dlib.load_rgb_image(filepath)
+    img = cv2.imread(filepath)
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    dets = detector(img_rgb, 1)
 
     for k, d in enumerate(dets):
         shape = predictor(img, d)
@@ -106,6 +108,12 @@ def align_face(filepath, predictor, output_size):
         quad += pad[:2]
 
     # Transform.
+    print('alignment------------------')
+    print('trans_size: ', str(transform_size))
+    print('method: ', str(PIL.Image.QUAD))
+    print('data: ', str((quad + 0.5).flatten()))
+    print('resample: ',  str(PIL.Image.BILINEAR))
+    
     img = img.transform((transform_size, transform_size), PIL.Image.QUAD, (quad + 0.5).flatten(), PIL.Image.BILINEAR)
     if output_size < transform_size:
         img = img.resize((output_size, output_size), PIL.Image.ANTIALIAS)

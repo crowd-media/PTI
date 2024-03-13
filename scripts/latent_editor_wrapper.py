@@ -36,7 +36,7 @@ class LatentEditorWrapper:
 
     def get_single_interface_gan_edits(self, start_w, factors):
         latents_to_display = {}
-        for direction in ['rotation', 'smile', 'age']:
+        for direction in ['smile']:
             for factor in factors:
                 if direction not in latents_to_display:
                     latents_to_display[direction] = {}

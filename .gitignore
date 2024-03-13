@@ -1,7 +1,11 @@
 *__pycache__/
- ninja-linux.zip
- embeddings/
- image_original/
- image_processed/
+.vscode/
 
- *.mp4
+checkpoints/
+embeddings/
+notebooks/
+preprocessed_images/
+results/
+*.mp4
+
+pti.sh

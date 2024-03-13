@@ -1,0 +1,8 @@
+{
+    "video_path": "/home/ubuntu/PTI/RAKAN.1_BlurredBeard_Tee_Idle01.mp4", 
+    "features_path": "/home/ubuntu/PTI/features/RAKAN", 
+    "duration": "40",
+    "intensity": "4", 
+    "use_multi_id_training": true, 
+    "use_last_w_pivots": false
+} 

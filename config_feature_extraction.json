@@ -1,5 +1,6 @@
 {
-    "video_path": "/home/ubuntu/PTI/CORP_KIK_v01.mp4",
+    "video_path": "/home/ubuntu/PTI/RAKAN.1_BlurredBeard_Tee_Idle01.mp4",
+    "result_path": "/home/ubuntu/PTI/features",
     "landmarks_model_path": "/home/ubuntu/efs/data/models/dlib/align.dat",
     "dbpn":{
         "checkpoint_path": "tests/data/checkpoints/dbpn_12_417.pth",
