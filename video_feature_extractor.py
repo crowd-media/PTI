@@ -25,7 +25,7 @@ from unith_thai.utils.constants import W2L_FACE_TEMPLATE
 from unith_thai.utils.constants import W2L_SIZE
 from unith_thai.utils.facial_utils import scale_face_template
 
-from optimal_crop_calculation import extend_crop_margins
+from helpers.optimal_crop_calculation import extend_crop_margins
 
 logger = logging.getLogger(__name__)
 

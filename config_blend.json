@@ -1,6 +1,6 @@
 {
-    "features_path": "/home/ubuntu/PTI/features/JO",
-    "generated_faces_path": "/home/ubuntu/PTI/results/JO/40_1_mean_0000/",
+    "features_path": "/home/ubuntu/PTI/features/RAKAN",
+    "generated_faces_path": "/home/ubuntu/PTI/results/RAKAN/rotation/",
     "result_path": "/home/ubuntu/PTI/video.mp4",
     "mask_params":{
         "mask_offset_factor": 0.1,
@@ -8,7 +8,7 @@
         "mask_diameter_scale":1
     },
     "video_params":{
-        "video_path": "/home/ubuntu/PTI/JO.1_Casual_Idle01.mp4",
+        "video_path": "/home/ubuntu/PTI/RAKAN.1_BlurredBeard_Tee_Idle01.mp4",
         "video_size_height" : 720,
         "video_size_width" : 1280, 
         "start_frame": 0, 

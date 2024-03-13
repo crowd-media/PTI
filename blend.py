@@ -11,7 +11,7 @@ from params.blend_params import BlendParams
 from blend_pipeline import BlendPipeline
 from dataloaders.dataloader import BlendDataLoader
 from dataloaders.imageloader import ImageLoader
-from ffmpeg_video_writer import FfmpegVideoWriter
+from helpers.ffmpeg_video_writer import FfmpegVideoWriter
 
 def run(params_path: str) -> None:
     print("Starting Talking Head inference command!")

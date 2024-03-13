@@ -1,5 +1,5 @@
 {
-    "video_path": "/home/ubuntu/PTI/RAKAN.1_BlurredBeard_Tee_Idle01.mp4",
+    "video_path": "/home/ubuntu/PTI/LEV.1_Casual_Idlke01.mp4",
     "result_path": "/home/ubuntu/PTI/features",
     "landmarks_model_path": "/home/ubuntu/efs/data/models/dlib/align.dat",
     "dbpn":{

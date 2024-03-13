@@ -124,6 +124,7 @@ class Synthesizer:
         # model_id = "YYJTWPVGCLHI" #AITANA 174
         # model_id = "EQYNOWJBVRLF" #AITANA 0000 usar use_multi_id_training": false
         # model_id = "KODUBCLHQJLU" #JO 0000 usar use_multi_id_training": false
+        # model_id = "QYTYHBQTOIPF" #RAKAN
         generator = self.load_generator(model_id)  
         self.generate_video(generator)
 
