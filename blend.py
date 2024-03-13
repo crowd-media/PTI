@@ -3,8 +3,7 @@ import sys
 
 sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.helpers.feature.feature_loader import FeatureLoader
-from unith_thai.data_loaders.frame_reader import FrameReader
-from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
+¡from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 
 
 from params.blend_params import BlendParams
