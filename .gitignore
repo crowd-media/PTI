@@ -8,5 +8,6 @@ preprocessed_images/
 results/
 features/
 *.mp4
+*.json
 
 pti.sh
