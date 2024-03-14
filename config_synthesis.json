@@ -1,8 +1,0 @@
-{
-    "video_path": "/home/ubuntu/PTI/LEV.1_Casual_Idlke01.mp4", 
-    "features_path": "/home/ubuntu/PTI/features/LEV", 
-    "duration": "40",
-    "intensity": "4", 
-    "use_multi_id_training": true, 
-    "use_last_w_pivots": false
-} 
