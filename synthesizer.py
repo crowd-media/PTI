@@ -23,6 +23,7 @@ class Synthesizer:
         self,
         video_path: str, 
         features: TalkingHeadFeatures, 
+        result_path: str,
         duration: int,
         intensity: int, 
         use_last_w_pivots: bool,
@@ -31,6 +32,7 @@ class Synthesizer:
     ):
         self.video_path = video_path
         self.features = features
+        self.result_path = result_path
         self.duration = duration
         self.intensity = intensity
         self.video_reader = video_reader
@@ -38,6 +40,7 @@ class Synthesizer:
      
         paths_config.stylegan2_ada_ffhq = '/home/ubuntu/efs/data/models/stylegan/ffhq.pkl'
         paths_config.input_data_id = (video_path.split('/')[-1]).split('.')[0]
+        # TODO: control parameters from config not hyperparameters.py script
         hyperparameters.use_last_w_pivots = use_last_w_pivots
 
     def extract_images(self,duration):
@@ -87,6 +90,10 @@ class Synthesizer:
         self.interface_gan(embedding_dir, embedding_list, array, generator)
 
     def interface_gan(self, embedding_dir, embedding_list, array, new_G):
+        result_path = f'{self.result_path}/{paths_config.input_data_id}/{self.duration}_{self.intensity}'
+        if not os.path.exists(result_path):
+            os.makedirs(result_path)
+
         for name, coef in zip(embedding_list, array):
             w_pivot = torch.load(f'{embedding_dir}/{name}/0.pt')
             latent_editor = LatentEditorWrapper()
@@ -103,7 +110,8 @@ class Synthesizer:
         # np.save(f'{img_name}.npy', img)
         plt.axis('off') 
         resized_image = Image.fromarray(img,mode='RGB') 
-        resized_image.save(f'{img_name}.png')
+        result_path = f'{self.result_path}/{paths_config.input_data_id}/{self.duration}_{self.intensity}'
+        resized_image.save(f'{result_path}/{img_name}.png')
         del img 
         del resized_image 
         torch.cuda.empty_cache()
@@ -118,14 +126,17 @@ class Synthesizer:
 
     def synthesize(self):
         self.extract_images(self.duration)
-        model_id = self.invert_images()  
+        # model_id = self.invert_images()  
         # model_id = 'WMJZBYILBXEN' #JO
         # model_id = 'WYALONPVCBNU' #AITANA
         # model_id = "YYJTWPVGCLHI" #AITANA 174
         # model_id = "EQYNOWJBVRLF" #AITANA 0000 usar use_multi_id_training": false
         # model_id = "KODUBCLHQJLU" #JO 0000 usar use_multi_id_training": false
-        # model_id = "QYTYHBQTOIPF" #RAKAN
+        model_id = "QYTYHBQTOIPF" #RAKAN
         generator = self.load_generator(model_id)  
+        # As it is now, the generator is trained to synthesize from a set of identities (multi_id)
+        # We've used it training it for the first image and sythesizing image by image from this training
+        # TODO: separate invert_images, from training generator, from synthesis
         self.generate_video(generator)
 
         # delete temporal files

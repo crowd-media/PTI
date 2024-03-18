@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class SynthesisParams(BaseModel):
     video_path: str
     features_path: str
+    result_path: str
     duration: int
     intensity: float
     use_multi_id_training: bool 

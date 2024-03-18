@@ -21,6 +21,7 @@ def run(params_path: str) -> None:
     synthesizer = Synthesizer(
         params.video_path,
         features,
+        params.result_path,
         params.duration,
         params.intensity,
         params.use_last_w_pivots,
