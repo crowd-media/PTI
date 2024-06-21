@@ -126,7 +126,7 @@ class Synthesizer:
 
     def synthesize(self):
         self.extract_images(self.duration)
-        # model_id = self.invert_images()  
+        model_id = self.invert_images()  
         # model_id = 'WMJZBYILBXEN' #JO
         # model_id = 'WYALONPVCBNU' #AITANA
         # model_id = "YYJTWPVGCLHI" #AITANA 174
