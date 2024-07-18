@@ -55,5 +55,5 @@ def run(params_path: str) -> None:
     return
 
 if __name__ == "__main__":
-    params_path = "/home/ubuntu/PTI/config_blend.json"
+    params_path = "/home/ubuntu/efs/data/users/itziar/config_files/PTI/config_blend.json"
     run(params_path)
