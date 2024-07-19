@@ -9,7 +9,3 @@ results/
 features/
 *.mp4
 *.json
-
-config_synthesis.json
-config_blend.json
-config_feature_extraction.json
