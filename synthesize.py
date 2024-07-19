@@ -8,6 +8,7 @@ from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 from helpers.feature_loader import FeatureLoader
 
 def run(params_path: str) -> None:
+    start_time = time.time()
     print("Starting synthesis command!")
     with open(params_path) as f:
                 print(f"Loading params from {params_path}...")
@@ -32,6 +33,8 @@ def run(params_path: str) -> None:
     
     print(f"Synthesizing {params.video_path}...")
     synthesizer.synthesize()
+    end_time = time.time()  # Record the end time
+    print(f"Execution time: {end_time - start_time} seconds")  # Print the execution time
     
     return
 
