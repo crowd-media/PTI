@@ -1,6 +1,7 @@
 import json
 from params.synthesis_params import SynthesisParams
 from synthesizer import Synthesizer
+import time
 
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 

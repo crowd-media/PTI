@@ -2,6 +2,8 @@ import numpy as np
 import torch
 import os
 
+from configs import global_config
+
 class Smoother():
     def __init__(self, embedding_dir: str, duration: int, window_size: int = 5):
         self.embedding_dir = embedding_dir
@@ -13,7 +15,7 @@ class Smoother():
         # Create the directory if it doesn't exist
         os.makedirs(os.path.dirname(mean_embedding_dir), exist_ok=True)
 
-        device = torch.device('cuda:0')
+        device = torch.device(global_config.device)
 
         if self.window_size % 2 == 0:
             self.window_size += 1

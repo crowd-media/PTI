@@ -1,10 +1,8 @@
 from random import choice
 from string import ascii_uppercase
 from torch.utils.data import DataLoader
-from torchvision.transforms import transforms
 import os
 from configs import global_config, paths_config
-import wandb
 
 from training.coaches.multi_id_coach import MultiIDCoach
 from training.coaches.single_id_coach import SingleIDCoach
@@ -20,17 +18,13 @@ def run_PTI(run_name='', use_wandb=False, use_multi_id_training=False):
     else:
         global_config.run_name = run_name
 
-    if use_wandb:
-        run = wandb.init(project=paths_config.pti_results_keyword, reinit=True, name=global_config.run_name)
     global_config.pivotal_training_steps = 1
     global_config.training_step = 1
 
     embedding_dir_path = f'{paths_config.embedding_base_dir}/{paths_config.input_data_id}/{paths_config.pti_results_keyword}'
     os.makedirs(embedding_dir_path, exist_ok=True)
 
-    dataset = ImagesDataset(paths_config.input_data_path, transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]))
+    dataset = ImagesDataset(paths_config.input_data_path)
 
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 

@@ -2,12 +2,12 @@ import abc
 import os
 import pickle
 from argparse import Namespace
-import wandb
+# import wandb
 import os.path
 from criteria.localitly_regulizer import Space_Regulizer
 import torch
-from torchvision import transforms
 from lpips import LPIPS
+from PIL import Image
 from training.projectors import w_projector
 from configs import global_config, paths_config, hyperparameters
 from criteria import l2_loss
@@ -27,11 +27,11 @@ class BaseCoach:
         if hyperparameters.first_inv_type == 'w+':
             self.initilize_e4e()
 
-        self.e4e_image_transform = transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.Resize((256, 256)),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])])
+        # self.e4e_image_transform = transforms.Compose([
+        #     transforms.ToPILImage(),
+        #     transforms.Resize((256, 256)),
+        #     transforms.ToTensor(),
+        #     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])])
 
         # Initialize loss
         self.lpips_loss = LPIPS(net=hyperparameters.lpips_type).to(global_config.device).eval()
@@ -110,14 +110,14 @@ class BaseCoach:
 
         if hyperparameters.pt_l2_lambda > 0:
             l2_loss_val = l2_loss.l2_loss(generated_images, real_images)
-            if self.use_wandb:
-                wandb.log({f'MSE_loss_val_{log_name}': l2_loss_val.detach().cpu()}, step=global_config.training_step)
+            # if self.use_wandb:
+            #     wandb.log({f'MSE_loss_val_{log_name}': l2_loss_val.detach().cpu()}, step=global_config.training_step)
             loss += l2_loss_val * hyperparameters.pt_l2_lambda
         if hyperparameters.pt_lpips_lambda > 0:
             loss_lpips = self.lpips_loss(generated_images, real_images)
             loss_lpips = torch.squeeze(loss_lpips)
-            if self.use_wandb:
-                wandb.log({f'LPIPS_loss_val_{log_name}': loss_lpips.detach().cpu()}, step=global_config.training_step)
+            # if self.use_wandb:
+            #     wandb.log({f'LPIPS_loss_val_{log_name}': loss_lpips.detach().cpu()}, step=global_config.training_step)
             loss += loss_lpips * hyperparameters.pt_lpips_lambda
 
         if use_ball_holder and hyperparameters.use_locality_regularization:
@@ -144,7 +144,13 @@ class BaseCoach:
 
     def get_e4e_inversion(self, image):
         image = (image + 1) / 2
-        new_image = self.e4e_image_transform(image[0]).to(global_config.device)
+        # new_image = self.e4e_image_transform(image[0]).to(global_config.device)
+        #TODO: check this!!!!
+        new_image = Image.fromarray((image[0].permute(1,2,0).cpu().numpy()*255).astype('uint8'))
+        new_image = new_image.resize((256,256), resample = Image.Resampling.BILINEAR)
+        new_image = torch.tensor(new_image).permute(2,0,1).float().div(255.0).to(global_config.device)
+        new_image = (new_image - 0.5) / 0.5
+
         _, w = self.e4e_inversion_net(new_image.unsqueeze(0), randomize_noise=False, return_latents=True, resize=False,
                                       input_code=False)
         if self.use_wandb:

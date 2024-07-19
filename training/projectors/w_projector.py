@@ -9,7 +9,7 @@
 """Project given image to the latent space of pretrained network pickle."""
 
 import copy
-import wandb
+# import wandb
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -119,12 +119,12 @@ def project(
                 noise = F.avg_pool2d(noise, kernel_size=2)
         loss = dist + reg_loss * regularize_noise_weight
 
-        if step % image_log_step == 0:
-            with torch.no_grad():
-                if use_wandb:
-                    global_config.training_step += 1
-                    wandb.log({f'first projection _{w_name}': loss.detach().cpu()}, step=global_config.training_step)
-                    log_utils.log_image_from_w(w_opt.repeat([1, G.mapping.num_ws, 1]), G, w_name)
+        # if step % image_log_step == 0:
+            # with torch.no_grad():
+                # if use_wandb:
+                #     global_config.training_step += 1
+                #     wandb.log({f'first projection _{w_name}': loss.detach().cpu()}, step=global_config.training_step)
+                #     log_utils.log_image_from_w(w_opt.repeat([1, G.mapping.num_ws, 1]), G, w_name)
 
         # Step
         optimizer.zero_grad(set_to_none=True)
