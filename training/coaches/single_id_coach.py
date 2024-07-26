@@ -45,29 +45,30 @@ class SingleIDCoach(BaseCoach):
             log_images_counter = 0
             real_images_batch = image.to(global_config.device)
 
-            for i in tqdm(range(hyperparameters.max_pti_steps)):
+            if image_name == '0000':
+                for i in tqdm(range(hyperparameters.max_pti_steps)):
 
-                generated_images = self.forward(w_pivot)
-                loss, l2_loss_val, loss_lpips = self.calc_loss(generated_images, real_images_batch, image_name,
-                                                               self.G, use_ball_holder, w_pivot)
+                    generated_images = self.forward(w_pivot)
+                    loss, l2_loss_val, loss_lpips = self.calc_loss(generated_images, real_images_batch, image_name,
+                                                                self.G, use_ball_holder, w_pivot)
 
-                self.optimizer.zero_grad()
+                    self.optimizer.zero_grad()
 
-                if loss_lpips <= hyperparameters.LPIPS_value_threshold:
-                    break
+                    if loss_lpips <= hyperparameters.LPIPS_value_threshold:
+                        break
 
-                loss.backward()
-                self.optimizer.step()
+                    loss.backward()
+                    self.optimizer.step()
 
-                use_ball_holder = global_config.training_step % hyperparameters.locality_regularization_interval == 0
+                    use_ball_holder = global_config.training_step % hyperparameters.locality_regularization_interval == 0
 
-                if self.use_wandb and log_images_counter % global_config.image_rec_result_log_snapshot == 0:
-                    log_images_from_w([w_pivot], self.G, [image_name])
+                    if self.use_wandb and log_images_counter % global_config.image_rec_result_log_snapshot == 0:
+                        log_images_from_w([w_pivot], self.G, [image_name])
 
-                global_config.training_step += 1
-                log_images_counter += 1
+                    global_config.training_step += 1
+                    log_images_counter += 1
 
-            self.image_counter += 1
+                self.image_counter += 1
 
-            torch.save(self.G,
-                       f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_{image_name}.pt')
+                torch.save(self.G,
+                        f'{paths_config.checkpoints_dir}/model_{global_config.run_name}_{image_name}.pt')
