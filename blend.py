@@ -1,7 +1,6 @@
 import json
 import sys
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.helpers.feature.feature_loader import FeatureLoader
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 

@@ -3,7 +3,6 @@ import sys
 import cv2 
 
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.helpers.detector.dlib_face_detector import DLibFaceDetector
 from unith_thai.helpers.feature.image_feature_extractor import ImageFeatureExtractor
 

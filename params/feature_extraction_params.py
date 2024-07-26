@@ -3,7 +3,6 @@ from pydantic import Field
 import sys
 
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.cli.params.dbpn_params import DBPNParams
 from unith_thai.cli.params.mask_params import MaskParams
 from unith_thai.cli.params.key_frames_params import KeyFramesParams

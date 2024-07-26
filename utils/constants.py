@@ -1,7 +1,5 @@
 import numpy as np
-import sys
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.helpers.feature.io.face_landmarks import FaceLandmarks
 
 

@@ -5,7 +5,11 @@ import os
 from utils.constants import PTI_FACE_TEMPLATE
 from utils.constants import PTI_SIZE
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
+# Dynamically patch the enum module
+import enum
+from compat import StrEnum
+enum.StrEnum = StrEnum
+
 from unith_thai.helpers.detector.dlib_face_detector import DLibFaceDetector
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 from unith_thai.helpers.feature.feature_loader import FeatureLoader
