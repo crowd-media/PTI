@@ -1,9 +1,12 @@
 import json
-import sys
+
+# Dynamically patch the enum module (python 3.10 compatibility)
+import enum
+from compat import StrEnum
+enum.StrEnum = StrEnum
 
 from unith_thai.helpers.feature.feature_loader import FeatureLoader
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
-
 
 from params.blend_params import BlendParams
 from blend_pipeline import BlendPipeline
