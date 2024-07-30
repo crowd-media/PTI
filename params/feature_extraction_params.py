@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from pydantic import Field
-import sys
 
 
 from unith_thai.cli.params.dbpn_params import DBPNParams
@@ -13,8 +12,7 @@ class FeatureExtractionParams(BaseModel):
     landmarks_model_path: str
     result_path: str
 
-    dbpn: DBPNParams
+    scale_factor: int = Field(default=1)
     mask_params: MaskParams
-    key_frames_params: KeyFramesParams
     template_scale_factor: float = Field(default=1)
     features_path: str = Field(default="")
