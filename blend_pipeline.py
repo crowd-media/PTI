@@ -9,7 +9,6 @@ from dataloaders.dataloader import BlendDataLoader
 from inputs_outpus.blend_input import BlendInput
 from params.blend_params import BlendParams
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 # from unith_thai.helpers.feature.io.talking_head_features import TalkingHeadFeatures
 from unith_thai.helpers.feature.io.face_coordinates import FaceCoordinates
 from unith_thai.helpers.writer.frame_writer import FrameWriter

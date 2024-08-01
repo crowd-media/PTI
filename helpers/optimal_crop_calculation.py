@@ -2,7 +2,6 @@ import sys
 import math
 
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.helpers.feature.io.face_coordinates import FaceCoordinates
 
 

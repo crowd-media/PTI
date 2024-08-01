@@ -6,7 +6,6 @@ import cv2
 import numpy as np
 import sys
 
-sys.path.append('/home/ubuntu/talking-heads-ai')
 from unith_thai.cli.params.key_frames_params import KeyFramesParams
 from unith_thai.cli.params.mask_params import MaskParams
 from unith_thai.data_loaders.frame_reader import FrameReader
@@ -36,7 +35,6 @@ class VideoFeatureExtractor:
         video_reader: FrameReader,
         face_detector: FaceDetector,
         mask_params: MaskParams,
-        key_frames_params: KeyFramesParams,
         scale_factor: int = 4,
         template_scale_factor: float = 1,
         smoothing_factor: int = 7,
@@ -55,10 +53,9 @@ class VideoFeatureExtractor:
             mask_params.mask_sigma,
             mask_params.mask_diameter_scale,
         )
-        self.key_frames_params = key_frames_params
         self.smoothing_factor = smoothing_factor
-        self.face_size = (1024,1024)
-        self.scale_factor = 1
+        self.face_size = image_size
+        self.scale_factor = template_scale_factor
         self.sr_area_coordinates = FaceCoordinates(
             left=0,
             right=1024,
@@ -176,9 +173,8 @@ class VideoFeatureExtractor:
         features: TalkingHeadFeatures = self.get_smooth_affine_inverse_and_mask(
             affine_matrices, optimal_crop
         )
-        if self.key_frames_params.activate_key_frames:
-            # set keyframes
-            features.key_frames = self.get_key_frames(optimal_crop)
+
+        
         return features
 
     @staticmethod
@@ -202,69 +198,6 @@ class VideoFeatureExtractor:
             )
         return coordinates_list
 
-    @execution_time_decorator(__name__)
-    def get_key_frames(self, optimal_crop: FaceCoordinates) -> dict[float, float]:
-        logger.info("Obtaining key frames")
-        # TODO: Generalize the metric in order to change it in the future
-        ssim_metric = SSIMMetric()
-        crops_list = self.get_crop_frames(optimal_crop)
-        similarity_matrix = self.get_similarity_matrix(crops_list, ssim_metric)
-        key_frames = self.key_frames_constraints(similarity_matrix)
-        return key_frames
-
-    @execution_time_decorator(__name__)
-    def get_similarity_matrix(
-        self,
-        crops_list: List[np.ndarray],
-        metric: Metric,
-    ) -> np.ndarray:
-        logger.info("Obtaining similarity matrix")
-
-        similarity_matrix = np.zeros(
-            (self.video_reader.total_frames, self.video_reader.total_frames),
-            dtype=np.float16,
-        )
-        for i in range(0, len(crops_list), self.key_frames_params.sampling_frames):
-            for j in range(i, len(crops_list), self.key_frames_params.sampling_frames):
-                similarity_matrix[i, j] = self.get_metric_value(
-                    metric, crops_list[i], crops_list[j]
-                )
-        return similarity_matrix
-
-
-    def key_frames_constraints(
-        self, similarity_matrix: np.ndarray
-    ) -> dict[float, float]:
-        """ " Get the similarity matrix and apply the the filters to get the jump frame for each frame"""
-        key_frames = {}
-        for frame_idx, frame_ssim in enumerate(similarity_matrix):
-            # Find the indices where the values are greater than the threshold
-            selected_frames = np.where(
-                frame_ssim > self.key_frames_params.metric_threshold
-            )[0]
-            selected_frames = selected_frames[
-                np.where(
-                    selected_frames - frame_idx
-                    > self.key_frames_params.max_waiting_frames
-                )[0]
-            ]
-
-            # If there are any indices, find the index of the maximum value
-            if selected_frames.size > 0:
-                max_idx_frame = self.get_jump_frame(selected_frames)
-                key_frames[(frame_idx / FPS)] = max_idx_frame / FPS
-                # (Jump_frame, ssim_value)
-
-        return key_frames
-
-    def get_jump_frame(self, selected_frames: np.ndarray) -> int | float:
-        # to get the index with the max value
-        """max_value_idx = np.argmax(row[indices])
-        max_value = row[indices][max_value_idx]
-        max_index = indices[max_value_idx]"""
-        # to get the bigger idx (the nearest to the final frame)
-        max_idx_frame = max(selected_frames)
-        return max_idx_frame
 
     def get_crop_image(
         self, optimal_crop: FaceCoordinates, image: np.ndarray
@@ -275,19 +208,7 @@ class VideoFeatureExtractor:
         ]
         return cropped_image
 
-    def get_resized_image(self, image: np.ndarray) -> np.ndarray:
-        width = int(image.shape[1] * self.key_frames_params.resize_factor)
-        height = int(image.shape[0] * self.key_frames_params.resize_factor)
-        return cv2.resize(image, (width, height), interpolation=cv2.INTER_CUBIC)
 
-    def get_crop_frames(self, optimal_crop: FaceCoordinates) -> List[np.ndarray]:
-        self.video_reader.start()
-        crops_list = []
-        for image in self.video_reader:
-            image = self.get_crop_image(optimal_crop, image)
-            image = self.get_resized_image(image)
-            crops_list.append(image)
-        return crops_list
 
     def get_smooth_landmarks(
         self, optimal_crop: FaceCoordinates, window_size: int = 7
