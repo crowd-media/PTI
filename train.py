@@ -4,12 +4,16 @@ from trainer import Trainer
 import time
 
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
-
 from helpers.feature_loader import FeatureLoader
+from helpers.config_manager import ConfigManager
+
+
 
 def run(params_path: str) -> None:
     start_time = time.time()
     print("Starting synthesis command!")
+    config_manager = ConfigManager(params_path)
+
     with open(params_path) as f:
                 print(f"Loading params from {params_path}...")
                 params = TrainParams(**json.load(f))

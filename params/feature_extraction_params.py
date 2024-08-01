@@ -1,11 +1,7 @@
 from pydantic import BaseModel
 from pydantic import Field
 
-
-from unith_thai.cli.params.dbpn_params import DBPNParams
 from unith_thai.cli.params.mask_params import MaskParams
-from unith_thai.cli.params.key_frames_params import KeyFramesParams
-
 
 class FeatureExtractionParams(BaseModel):
     video_path: str

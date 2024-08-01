@@ -14,11 +14,10 @@ from unith_thai.helpers.detector.dlib_face_detector import DLibFaceDetector
 from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
 from unith_thai.helpers.feature.feature_loader import FeatureLoader
 from params.feature_extraction_params import FeatureExtractionParams
-# from unith_thai.helpers.feature.video_feature_extractor import VideoFeatureExtractor
-
+from helpers.config_manager import ConfigManager
 from video_feature_extractor import VideoFeatureExtractor
 
-def run(params_path: str) -> None:
+def run(params_path: str, config_manager: ConfigManager) -> None:
     print("Starting video features extraction!")
     feature_loader = FeatureLoader()
     with open(params_path) as f:
@@ -40,15 +39,21 @@ def run(params_path: str) -> None:
     features = extractor.extract_features()
 
     video_name = params.video_path.split("/")[-1]
+    features_path = os.path.join(params.result_path, video_name.split(".")[0])
     feature_loader.save(
         features,
-        os.path.join(params.result_path, video_name.split(".")[0]),
+        features_path,
     )
-    
+    #Prepare config for next step
+    train_config = config_manager.open_config("train")
+    train_config = config_manager.update_config(train_config, "features_path", features_path)
+    train_config = config_manager.update_config(train_config, "video_path", params.video_path)
+    config_manager.save_config("train", train_config)
     return
 
 if __name__ == "__main__":
-    params_path = "/home/ubuntu/efs/data/users/itziar/config_files/PTI/old/config_feature_extraction.json"
-    features = run(params_path)
+    params_path = "/home/ubuntu/efs/data/users/itziar/config_files/PTI/config_feature_extraction.json"
+    config_manager = ConfigManager(params_path)
+    features = run(params_path, config_manager)
 
     
