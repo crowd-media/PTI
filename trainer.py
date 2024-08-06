@@ -56,7 +56,7 @@ class Trainer:
         return model_id
         
 
-    def synthesize(self):
+    def train(self):
         self.extract_images(self.duration)
         model_id = self.invert_images_and_train()  
 

@@ -61,10 +61,10 @@ class Synthesizer:
 
         embedding_list = self.read_embeddings(embedding_dir)
 
-        forw_array = np.linspace(0,self.intensity*0.8, num=int(self.duration/4), endpoint=True)
-        forw_array_bis = np.linspace(self.intensity*0.8,self.intensity, num=int(self.duration/4), endpoint=True)
-        back_array = np.linspace(self.intensity,self.intensity*0.8, num=int(self.duration/4), endpoint=True)
-        back_array_bis = np.linspace(self.intensity*0.8,0, num=int(self.duration/4), endpoint=True)
+        forw_array = np.linspace(0,self.intensity*0.5, num=int(self.duration/4), endpoint=True)
+        forw_array_bis = np.linspace(self.intensity*0.5,self.intensity, num=int(self.duration/4), endpoint=True)
+        back_array = np.linspace(self.intensity,self.intensity*0.5, num=int(self.duration/4), endpoint=True)
+        back_array_bis = np.linspace(self.intensity*0.5,0, num=int(self.duration/4), endpoint=True)
         array = np.concatenate((forw_array, forw_array_bis, back_array, back_array_bis))
 
         self.interface_gan(embedding_dir, embedding_list, array, generator)
