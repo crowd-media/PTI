@@ -11,13 +11,19 @@ from params.synthesis_params import SynthesisParams
 from params.blend_params import BlendParams
 
 class ConfigManager():
-    def __init__(self, base_path: str) -> None:
-        base_config_path = os.path.join(base_path, "config.json")
+    def __init__(self, base_path: str, video_path: str, duration: int, intensity:float) -> None:
+        self.base_path = base_path
 
+        base_config_path = os.path.join(base_path, "config.json")
         with open(base_config_path, 'r') as f:
             base_config_data = json.load(f)
-        
-        self.base_path = base_path
+
+        video_path = {"video_path": video_path}
+
+        base_config_data = self.update_config(base_config_data, "video_params", video_path)
+        base_config_data = self.update_config(base_config_data, "duration", duration)
+        base_config_data = self.update_config(base_config_data, "intensity", intensity)
+        self.save_config(None, base_config_data)
 
         self.steps = ['feature_extraction', 'train', 'synthesize', 'blend']
         self.params = [FeatureExtractionParams, TrainParams, SynthesisParams, BlendParams]
@@ -46,11 +52,13 @@ class ConfigManager():
         return config_data
     
     def save_config(self, step, config_data: Dict) -> None:
-        with open(os.path.join(self.base_path, f"config_{step}.json"), 'w') as f:
+        config_name = 'config.json' if step == None else f"config_{step}.json"
+        config_path = os.path.join(self.base_path, config_name)
+        with open(config_path, 'w') as f:
             json.dump(config_data, f, indent=4)
 
     def open_config(self, step: str) -> Dict:
-        config_name = f"config_{step}.json"
+        config_name = 'config.json' if step == None else f"config_{step}.json"
         config_path = os.path.join(self.base_path, config_name)
         with open(config_path, 'r') as f:
             config_data = json.load(f)

@@ -6,18 +6,22 @@ from synthesize import synthesize
 from train import train
 from helpers.config_manager import ConfigManager
 
-def greet(config_directory):
-    main(config_directory)
+def greet(video, duration, intensity):
+    main(video, duration, intensity)
     return "Video processed", gr.Video("./video.mp4")
 
 demo = gr.Interface(
     fn=greet,
-    inputs=["text"], 
+    inputs=["video", "text", "text"], 
     outputs=["text", "video"],
 )
 
-def main(base_path):
-    config_manager = ConfigManager(base_path)
+def main(video, duration, intensity):
+    base_path = '.'
+    config_manager = ConfigManager(base_path, video, duration, intensity)
+
+    config_data = config_manager.open_config("feature_extraction")
+    config_data = config_manager.update_config(config_data, "video_path", video)
 
     params_path = os.path.join(base_path, f"config_feature_extraction.json")
     extract_features(params_path, config_manager)
