@@ -1,21 +1,13 @@
 import os
 import glob
-import shutil
 import torch
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
-import cv2
 
 from configs import paths_config
-from configs import hyperparameters
 from scripts.latent_editor_wrapper import LatentEditorWrapper
-from scripts.run_pti import run_PTI
-from utils.constants import PTI_SIZE
 from helpers.smoother import Smoother
-
-from unith_thai.data_loaders.video.stream_video_reader import StreamVideoReader
-from unith_thai.helpers.feature.io.talking_head_features import TalkingHeadFeatures
 
 
 class Synthesizer:

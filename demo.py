@@ -20,9 +20,6 @@ def main(video, duration, intensity):
     base_path = '.'
     config_manager = ConfigManager(base_path, video, duration, intensity)
 
-    config_data = config_manager.open_config("feature_extraction")
-    config_data = config_manager.update_config(config_data, "video_path", video)
-
     params_path = os.path.join(base_path, f"config_feature_extraction.json")
     extract_features(params_path, config_manager)
     params_path = os.path.join(base_path, f"config_train.json")
