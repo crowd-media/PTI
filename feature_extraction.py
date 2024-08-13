@@ -37,27 +37,11 @@ def extract_features(params_path: str, config_manager = Optional[ConfigManager])
     print("Extracting features...")
     features = extractor.extract_features()
 
-    video_name = params.video_params.video_path.split("/")[-1]
-    features_path = os.path.join(params.features_path, video_name.split(".")[0])
     feature_loader.save(
         features,
-        features_path,
+        params.features_path,
     )
-    print(f"Features saved in {features_path}")
-    if config_manager is None:
-        return
-    else: 
-        config_data = config_manager.open_config("train")
-        config_data = config_manager.update_config(config_data, "features_path", features_path)
-        config_manager.save_config("train", config_data)
-
-        config_data = config_manager.open_config("synthesize")
-        config_data = config_manager.update_config(config_data, "features_path", features_path)    
-        config_manager.save_config("synthesize", config_data)
-
-        config_data = config_manager.open_config("blend")
-        config_data = config_manager.update_config(config_data, "features_path", features_path)    
-        config_manager.save_config("blend", config_data)
+    print(f"Features saved in {params.features_path}")
 
 if __name__ == "__main__":
     params_path = "/home/ubuntu/efs/data/users/itziar/config_files/PTI/config_feature_extraction.json"

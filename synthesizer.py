@@ -16,7 +16,7 @@ class Synthesizer:
         video_path: str,
         result_path: str,
         duration: int,
-        intensity: int, 
+        intensity: float, 
         model_id: str, 
         use_multi_id_training: bool = False
     ):
@@ -62,9 +62,8 @@ class Synthesizer:
         self.interface_gan(embedding_dir, embedding_list, array, generator)
 
     def interface_gan(self, embedding_dir, embedding_list, array, new_G):
-        result_path = f'{self.result_path}/{paths_config.input_data_id}/{self.duration}_{self.intensity}'
-        if not os.path.exists(result_path):
-            os.makedirs(result_path)
+        if not os.path.exists(self.result_path):
+            os.makedirs(self.result_path)
 
         for name, coef in zip(embedding_list, array):
             w_pivot = torch.load(f'{embedding_dir}/{name}/0.pt')
@@ -82,8 +81,7 @@ class Synthesizer:
         # np.save(f'{img_name}.npy', img)
         plt.axis('off') 
         resized_image = Image.fromarray(img,mode='RGB') 
-        result_path = f'{self.result_path}/{paths_config.input_data_id}/{self.duration}_{self.intensity}'
-        resized_image.save(f'{result_path}/{img_name}.png')
+        resized_image.save(f'{self.result_path}/{img_name}.png')
         del img 
         del resized_image 
         torch.cuda.empty_cache()

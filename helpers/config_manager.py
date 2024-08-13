@@ -13,16 +13,25 @@ from params.blend_params import BlendParams
 class ConfigManager():
     def __init__(self, base_path: str, video_path: str, duration: int, intensity:float) -> None:
         self.base_path = base_path
+        
+        duration = int(duration)
+        intensity = float(intensity)
 
         base_config_path = os.path.join(base_path, "config.json")
         with open(base_config_path, 'r') as f:
             base_config_data = json.load(f)
 
-        video_path = {"video_path": video_path}
+        video_params = {"video_path": video_path}
+        video_name = video_path.split("/")[-1]
+        features_path = os.path.join('features/', video_name.split(".")[0])
+        synth_result_path = os.path.join('results/', video_name.split(".")[0], f"{duration}_{intensity}")
 
-        base_config_data = self.update_config(base_config_data, "video_params", video_path)
+        base_config_data = self.update_config(base_config_data, "video_params", video_params)
         base_config_data = self.update_config(base_config_data, "duration", duration)
         base_config_data = self.update_config(base_config_data, "intensity", intensity)
+        base_config_data = self.update_config(base_config_data, "features_path", features_path)
+        base_config_data = self.update_config(base_config_data, "synth_result_path", synth_result_path)
+
         self.save_config(None, base_config_data)
 
         self.steps = ['feature_extraction', 'train', 'synthesize', 'blend']

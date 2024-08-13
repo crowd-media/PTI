@@ -39,12 +39,12 @@ def train(params_path: str, config_manager: Optional[ConfigManager]) -> None:
     print(f"Training execution time: {end_time - start_time} seconds")  # Print the execution time
 
     if config_manager is None:
-        return
+        return model_id
     else:
         config_data = config_manager.open_config("synthesize")
         config_data = config_manager.update_config(config_data, "model_id", model_id)     
         config_manager.save_config("synthesize", config_data)
-        return
+        return model_id
     
 
 if __name__ == "__main__":
