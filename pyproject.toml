@@ -1,0 +1,93 @@
+[tool.poetry]
+name = "PTI"
+version = "0.1.0"
+description = "A package for train, evaluate and infer AI pipelines"
+authors = ["Sergio Vidiella <sergio@unith.ai>"]
+readme = "README.md"
+repository = "https://github.com/crowd-media/talking_heads_ai"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.dependencies]
+python = "^3.10.14"
+opencv-python = "~4.8.0.74"
+dlib = "~19.24.2"
+numpy = "~1.25.1"
+onnx = "~1.14.1"
+kornia = "^0.7.0"
+tritonclient = "^2.37.0"
+typing-extensions = "^4.7.1"
+grpcio = "^1.56.2"
+librosa = "^0.10.1"
+# This is for compatibility with librosa 0.9.2 (what w2l uses)
+resampy = "^0.4.2"
+pydantic = "^2.3.0"
+neptune = "^1.6.1"
+scikit-image = "^0.21.0"
+gradio = "^4.40.0"
+aiosonic = "^0.16.1"
+audioflux = "^0.1.8"
+ninja = "1.11.1.1"
+labelbox = "^3.71.0"
+torch = "1.13.1"
+torchvision = "0.14.1"
+torchaudio = "0.13.1"
+lpips = "^0.1.4"
+unith-thai = { git = "https://github.com/crowd-media/talking-heads-ai.git" , branch = "feat/fix-compat"}
+
+[tool.poetry.dev-dependencies]
+pytest= "~7.4.0"
+pytest-cov = "^4.1.0"
+pytest-asyncio = "^0.21.1"
+coverage = "^7.3.0"
+pre-commit = "^3.3.3"
+dvc = { extras = ["s3"], version = "^3.16.0" }
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.2"
+mkdocs-material = "~9.1.21"
+mkdocs-macros-plugin = "^1.0.4"
+mkdocs-section-index = "^0.3.5"
+mkdocs-git-revision-date-plugin = "^0.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.flake8]
+max-line-length = 120
+
+[tool.ruff]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "RSE", # flake8-raise
+    "SIM", # flake8-simplify
+    "PIE", # flake8-pie
+    "PYI", # flake8-pyi
+    "Q",   # flake8-quotes
+    "INP", # flake8-no-pep-420
+    "PT",  # flake8-pytest-style
+    "RUF", # ruff rules
+]
+ignore = [
+    "E501",   # line too long, handled by black
+    "B905",
+    "B020",
+    "B024",
+    "B027",
+    "C901",
+    "SIM117",
+    "SIM114",
+    "SIM103",
+    "SIM102",
+    "PT004",
+    "PT011",
+    "PT012",
+    "PT017",
+]
