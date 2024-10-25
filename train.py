@@ -50,4 +50,4 @@ def train(params_path: str, config_manager: Optional[ConfigManager]) -> None:
 if __name__ == "__main__":
     params_path = "/home/ubuntu/efs/data/users/itziar/config_files/PTI/config_train.json"
     
-    train(params_path)
+    train(params_path, None)
